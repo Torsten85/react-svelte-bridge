@@ -1,0 +1,55 @@
+{
+  "name": "react-svelte-bridge",
+  "version": "0.0.2",
+  "description": "use svelte Components inside react",
+  "main": "dist/index.cjs.js",
+  "module": "dist/index.esm.js",
+  "typings": "dist/index.d.ts",
+  "homepage": "https://github.com/Torsten85/react-svelte-bridge",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Torsten85/react-svelte-bridge.git"
+  },
+  "scripts": {
+    "build": "rollup -c",
+    "watch": "rollup -cw",
+    "lint": "eslint --ext ts,tsx --max-warnings 0 --cache src"
+  },
+  "keywords": [
+    "react",
+    "svelte"
+  ],
+  "author": "Torsten Blindert",
+  "license": "MIT",
+  "peerDependencies": {
+    "react": "^16.0.0",
+    "react-dom": "^16.0.0",
+    "svelte": "^3.0.0"
+  },
+  "devDependencies": {
+    "@grapes-agency/eslint-config": "^1.5.7",
+    "@types/react": "^17.0.13",
+    "@types/react-dom": "^17.0.8",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
+    "rollup": "^2.52.6",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "svelte": "^3.38.3",
+    "tslib": "^2.3.0",
+    "typescript": "^4.3.5"
+  },
+  "prettier": "@grapes-agency/eslint-config/prettier",
+  "eslintConfig": {
+    "extends": [
+      "@grapes-agency/eslint-config/rules/base",
+      "@grapes-agency/eslint-config/rules/prettier",
+      "@grapes-agency/eslint-config/rules/react"
+    ],
+    "rules": {
+      "@typescript-eslint/no-explicit-any": "off",
+      "@typescript-eslint/explicit-function-return-type": "off",
+      "@typescript-eslint/consistent-type-assertions": "off",
+      "@typescript-eslint/no-shadow": "off"
+    }
+  }
+}
