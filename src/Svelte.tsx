@@ -1,4 +1,4 @@
-import React, { cloneElement, ReactElement, ReactNode, useEffect, useMemo, useRef } from 'react'
+import React, { cloneElement, ReactElement, ReactNode, useEffect, useMemo, useRef, useState } from 'react'
 import { createPortal } from 'react-dom'
 import { SvelteComponent } from 'svelte'
 import { detach, insert, noop } from 'svelte/internal'
@@ -28,7 +28,7 @@ export const Svelte = <Props extends {} = any>({
   const watchHandlersRef = useRef(new Map<string, { prevValue: any; handler: (value: any) => void }>())
   const slotContainersRef = useRef(new Map<string, Node>())
   const createSlotContainerRef = useRef(createSlotContainer)
-
+  const [slotsVisible, setSlotsVisible] = useState<Array<string>>([])
   useEffect(() => {
     createSlotContainerRef.current = createSlotContainer
   }, [createSlotContainer])
@@ -55,7 +55,7 @@ export const Svelte = <Props extends {} = any>({
   const [eventHandlers, slots, props] = useMemo(() => {
     const eventHandlers: Record<string, (event: any) => void> = {}
     const watchHandlers = new Map<string, { prevValue: any; handler: (value: any) => void }>()
-    const slots: Array<{ node: ReactNode; container: Node }> = []
+    const slots: Array<{ name: string; node: ReactNode; container: Node }> = []
     const props: Record<string, any> = {
       $$scope: {},
       $$slots: {},
@@ -91,6 +91,7 @@ export const Svelte = <Props extends {} = any>({
 
         const container = slotContainersRef.current.get(slotName)!
         slots.push({
+          name: slotName,
           node: prop as any,
           container,
         })
@@ -100,10 +101,12 @@ export const Svelte = <Props extends {} = any>({
             c: noop,
             l: noop,
             m: (target: Node, anchor?: Node) => {
+              setSlotsVisible(slots => [...slots, slotName])
               insert(target, container, anchor)
             },
             d: (destroy: any) => {
               if (destroy) {
+                setSlotsVisible(slots => slots.filter(s => s !== slotName))
                 detach(container)
               }
             },
@@ -173,7 +176,7 @@ export const Svelte = <Props extends {} = any>({
   return (
     <>
       {container}
-      {slots.map(({ node, container }) => createPortal(node, container as Element))}
+      {slots.map(({ name, node, container }) => slotsVisible.includes(name) && createPortal(node, container as Element))}
     </>
   )
 }
