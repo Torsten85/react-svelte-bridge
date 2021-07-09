@@ -1,6 +1,6 @@
 {
   "name": "react-svelte-bridge",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "use svelte Components inside react",
   "main": "dist/index.cjs.js",
   "module": "dist/index.esm.js",
